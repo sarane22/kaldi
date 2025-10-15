@@ -17,7 +17,7 @@
 
 #if HAVE_CUDA == 1
 #ifndef __IS_HIP_COMPILE__
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 #endif
 #include "base/kaldi-common.h"
@@ -91,11 +91,11 @@ int main(int argc, char *argv[]) {
         CuMatrix<BaseFloat> cu_features;
         CuVector<BaseFloat> cu_ivector;
 
-        nvtxRangePushA("Feature Extract");
+        // nvtxRangePushA("Feature Extract");
         feature_pipeline.ComputeFeatures(cu_wave,  wave_data.SampFreq(),
             &cu_features, &cu_ivector);
         cudaDeviceSynchronize();
-        nvtxRangePop();
+        // nvtxRangePop();
 
         Matrix<BaseFloat> features(cu_features.NumRows(), cu_features.NumCols());
         Vector<BaseFloat> ivector(cu_ivector.Dim());

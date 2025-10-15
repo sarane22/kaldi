@@ -18,7 +18,7 @@
 #if HAVE_CUDA
 #ifndef __IS_HIP_COMPILE__
 #include <cuda_profiler_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 #endif
 
@@ -73,7 +73,7 @@ struct CallbackState {
 int32_t feat_dim, ivector_dim, ldf;
 
 void CUDART_CB CopySlicesCallback(void *cb_state_p) {
-  nvtxRangePushA("CopySlices");
+  // nvtxRangePushA("CopySlices");
   std::vector<CallbackState> &cb_state =
       *reinterpret_cast<std::vector<CallbackState> *>(cb_state_p);
   // At this time the batch is computed.  We now need to copy each slice
@@ -99,7 +99,7 @@ void CUDART_CB CopySlicesCallback(void *cb_state_p) {
         state.ivectors->Range(ivector_dim * lane, ivector_dim));
     handle.ivector_out.CopyFromVec(p_ivector);
   }  // end copy slices loop
-  nvtxRangePop();
+  // nvtxRangePop();
 }  // end callback
 
 int main(int argc, char *argv[]) {

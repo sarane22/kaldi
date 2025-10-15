@@ -44,7 +44,7 @@
 #include "hipify.h"
 #else
 #include <cuda_runtime_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include "base/kaldi-utils.h"
@@ -1127,7 +1127,7 @@ void CudaDecoder::GetBestPath(const std::vector<ChannelId> &channels,
                               std::vector<Lattice *> &fst_out_vec,
                               bool use_final_probs) {
   KALDI_ASSERT(channels.size() == fst_out_vec.size());
-  nvtxRangePushA("GetBestPath");
+  // nvtxRangePushA("GetBestPath");
   GetBestCost(channels, use_final_probs, &argmins_,
               &list_finals_token_idx_and_cost_, &has_reached_final_);
 
@@ -1189,7 +1189,7 @@ void CudaDecoder::GetBestPath(const std::vector<ChannelId> &channels,
 
     fst::RemoveEpsLocal(fst_out);
   }
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void CudaDecoder::DebugValidateLattice() {
@@ -1591,7 +1591,7 @@ void CudaDecoder::PrepareForGetRawLattice(
 
 void CudaDecoder::ConcurrentGetRawLatticeSingleChannel(const ChannelId ichannel,
                                                        Lattice *fst_out) {
-  nvtxRangePushA("GetRawLatticeOneChannel");
+  // nvtxRangePushA("GetRawLatticeOneChannel");
   // Allocating the datastructures that we need
 
   // [prev|curr]_f_raw_lattice_state
@@ -1780,7 +1780,7 @@ void CudaDecoder::ConcurrentGetRawLatticeSingleChannel(const ChannelId ichannel,
                               &q_prev_frame_todo, &curr_f_raw_lattice_state,
                               &prev_f_raw_lattice_state, &f_arc_idx_added);
   }
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void CudaDecoder::GetRawLattice(const std::vector<ChannelId> &channels,

@@ -24,7 +24,7 @@
 
 #include "hipify.h"
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #include <cub/cub.cuh>
 #endif
 
@@ -525,7 +525,7 @@ void CudaSpectralFeatures::ComputeFinalFeatures(int num_frames, BaseFloat vtln_w
 void CudaSpectralFeatures::ComputeFeatures(const CuVectorBase<BaseFloat> &cu_wave,
                                BaseFloat sample_freq, BaseFloat vtln_warp,
                                CuMatrix<BaseFloat> *cu_features) {
-  nvtxRangePushA("CudaSpectralFeatures::ComputeFeatures");
+  // nvtxRangePushA("CudaSpectralFeatures::ComputeFeatures");
   const FrameExtractionOptions &frame_opts = GetFrameOptions();
   int num_frames = NumFrames(cu_wave.Dim(), frame_opts, true);
   // compute fft frames by rounding up to a multiple of fft_size_
@@ -563,7 +563,7 @@ void CudaSpectralFeatures::ComputeFeatures(const CuVectorBase<BaseFloat> &cu_wav
   // Compute Features
   ComputeFinalFeatures(num_frames, 1.0, &raw_log_energies, cu_features);
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 CudaSpectralFeatures::~CudaSpectralFeatures() {
   delete[] cu_vecs_;

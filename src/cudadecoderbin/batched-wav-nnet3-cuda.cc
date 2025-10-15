@@ -24,7 +24,7 @@
 #else
 #include <cuda.h>
 #include <cuda_profiler_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 #include <sstream>
 #include "cudadecoder/batched-threaded-nnet3-cuda-pipeline.h"
@@ -100,7 +100,7 @@ void FinishOneDecode(const std::string &utt, const std::string &key,
                      CompactLatticeWriter *clat_writer,
                      std::mutex *clat_writer_mutex, std::mutex *stdout_mutex,
                      const bool write_lattice, CompactLattice &clat) {
-  nvtxRangePushA("FinishOneDecode");
+  // nvtxRangePushA("FinishOneDecode");
   GetDiagnosticsAndPrintOutput(utt, word_syms, clat, stdout_mutex, num_frames,
                                tot_like);
   if (write_lattice) {
@@ -108,7 +108,7 @@ void FinishOneDecode(const std::string &utt, const std::string &key,
     clat_writer->Write(key, clat);
   }
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 int main(int argc, char *argv[]) {
@@ -215,7 +215,7 @@ int main(int argc, char *argv[]) {
     int64 num_frames = 0;
     double total_audio = 0;
 
-    nvtxRangePush("Global Timer");
+    // nvtxRangePush("Global Timer");
 
     int num_groups_done = 0;
 
@@ -233,7 +233,7 @@ int main(int argc, char *argv[]) {
       SequentialTableReader<WaveHolder> wav_reader(wav_rspecifier);
 
       for (; !wav_reader.Done(); wav_reader.Next()) {
-        nvtxRangePushA("Utterance Iteration");
+        // nvtxRangePushA("Utterance Iteration");
 
         while (cuda_pipeline.GetNumberOfTasksPending() >= pipeline_length) {
           kaldi::Sleep(KALDI_CUDA_DECODER_BIN_PIPELINE_FULL_SLEEP);
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]) {
                                        finish_one_decode_lamba);
         num_task_submitted++;
 
-        nvtxRangePop();
+        // nvtxRangePop();
         if (num_todo != -1 && num_task_submitted >= num_todo) break;
       }  // end utterance loop
 
@@ -337,7 +337,7 @@ int main(int argc, char *argv[]) {
 
     // number of seconds elapsed since the creation of timer
     double total_time = timer.Elapsed();
-    nvtxRangePop();
+    // nvtxRangePop();
 
     KALDI_LOG << "Decoded " << num_task_submitted << " utterances, " << num_err
               << " with errors.";

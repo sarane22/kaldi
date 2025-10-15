@@ -25,7 +25,7 @@
 
 #include "hipify.h"
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 namespace kaldi {
@@ -132,7 +132,7 @@ void OnlineBatchedFeaturePipelineCuda::ComputeFeaturesBatched(
     BaseFloat sample_freq, const CuMatrixBase<BaseFloat> &cu_waves,
     CuMatrix<BaseFloat> *input_features, CuVector<BaseFloat> *ivector_features,
     std::vector<int32_t> *num_frames_computed) {
-  nvtxRangePushA("OnlineBatchedFeaturePipelineCuda::ComputeFeaturesBatched");
+  // nvtxRangePushA("OnlineBatchedFeaturePipelineCuda::ComputeFeaturesBatched");
   KALDI_ASSERT(num_lanes <= max_lanes_);
   KALDI_ASSERT(num_lanes <= num_frames_computed->size());
 
@@ -201,7 +201,7 @@ void OnlineBatchedFeaturePipelineCuda::ComputeFeaturesBatched(
     ivector_->GetIvectors(*input_features, ivector_features, lanes_, num_lanes);
   }
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 }  // namespace kaldi

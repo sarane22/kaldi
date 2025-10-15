@@ -31,7 +31,7 @@
 
 #include "hipify.h"
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include "base/kaldi-utils.h"
@@ -307,7 +307,7 @@ void BatchedThreadedNnet3CudaPipeline::OpenDecodeHandle(
 
 bool BatchedThreadedNnet3CudaPipeline::GetRawLattice(const std::string &key,
                                                      Lattice *lat) {
-  nvtxRangePushA("GetRawLattice");
+  // nvtxRangePushA("GetRawLattice");
   TaskState *task;
   {
     std::lock_guard<std::mutex> lock(tasks_lookup_mutex_);
@@ -325,18 +325,18 @@ bool BatchedThreadedNnet3CudaPipeline::GetRawLattice(const std::string &key,
   KALDI_ASSERT(task->determinized == false);
 
   if (task->error) {
-    nvtxRangePop();
+    // nvtxRangePop();
     return false;
   }
   // Store off the lattice
   *lat = task->lat;
-  nvtxRangePop();
+  // nvtxRangePop();
   return true;
 }
 
 bool BatchedThreadedNnet3CudaPipeline::GetLattice(const std::string &key,
                                                   CompactLattice *clat) {
-  nvtxRangePushA("GetLattice");
+  // nvtxRangePushA("GetLattice");
   TaskState *task;
   {
     std::lock_guard<std::mutex> lock(tasks_lookup_mutex_);
@@ -350,7 +350,7 @@ bool BatchedThreadedNnet3CudaPipeline::GetLattice(const std::string &key,
   while (!task->finished) kaldi::Sleep(SLEEP_BACKOFF_S);
 
   if (task->error) {
-    nvtxRangePop();
+    // nvtxRangePop();
     return false;
   }
 
@@ -362,7 +362,7 @@ bool BatchedThreadedNnet3CudaPipeline::GetLattice(const std::string &key,
   }
 
   *clat = task->dlat;  // grab compact lattice
-  nvtxRangePop();
+  // nvtxRangePop();
   return true;
 }
 
@@ -454,7 +454,7 @@ void BatchedThreadedNnet3CudaPipeline::AquireAdditionalTasks(
 void BatchedThreadedNnet3CudaPipeline::ComputeBatchNnet(
     nnet3::NnetBatchComputer &computer, int32 first,
     std::vector<TaskState *> &tasks) {
-  nvtxRangePushA("ComputeBatchNnet");
+  // nvtxRangePushA("ComputeBatchNnet");
 
   bool output_to_cpu = false;
   int32 online_ivector_period = 0;
@@ -522,12 +522,12 @@ void BatchedThreadedNnet3CudaPipeline::ComputeBatchNnet(
     task_data->input_features.Resize(0, 0);
   }
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 // Computes Features for a single decode instance.
 void BatchedThreadedNnet3CudaPipeline::ComputeOneFeatureCPU(TaskState *task_) {
-  nvtxRangePushA("ComputeOneFeatureCPU");
+  // nvtxRangePushA("ComputeOneFeatureCPU");
   TaskState &task = *task_;
   std::unique_ptr<TaskData> &task_data = task.task_data;
   Vector<BaseFloat> &ivector_features = task_data->ivector_features_cpu;
@@ -575,7 +575,7 @@ void BatchedThreadedNnet3CudaPipeline::ComputeOneFeatureCPU(TaskState *task_) {
 
   AddTaskToPendingTaskQueue(task_);
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 // Computes features across the tasks[first,tasks.size()
@@ -583,7 +583,7 @@ void BatchedThreadedNnet3CudaPipeline::ComputeBatchFeatures(
     int32 first, std::vector<TaskState *> &tasks,
     OnlineCudaFeaturePipeline &feature_pipeline) {
   KALDI_ASSERT(config_.gpu_feature_extract == true);
-  nvtxRangePushA("CopyBatchWaves");
+  // nvtxRangePushA("CopyBatchWaves");
   // below we will pack waves into a single buffer for efficient transfer
   // across device
 
@@ -619,9 +619,9 @@ void BatchedThreadedNnet3CudaPipeline::ComputeBatchFeatures(
 
   // vector copy function for threading below.
   auto copy_vec = [](SubVector<BaseFloat> dst, const SubVector<BaseFloat> src) {
-    nvtxRangePushA("CopyVec");
+    // nvtxRangePushA("CopyVec");
     dst.CopyFromVec(src);
-    nvtxRangePop();
+    // nvtxRangePop();
   };
 
   // next launch threads to copy all waves for each task in parallel
@@ -648,9 +648,9 @@ void BatchedThreadedNnet3CudaPipeline::ComputeBatchFeatures(
   cudaMemcpyAsync(cu_waves.Data(), pinned_vector.Data(),
                   cu_waves.Dim() * sizeof(BaseFloat), cudaMemcpyHostToDevice,
                   cudaStreamPerThread);
-  nvtxRangePop();
+  // nvtxRangePop();
 
-  nvtxRangePushA("ComputeBatchFeatures");
+  // nvtxRangePushA("ComputeBatchFeatures");
   // extract features for each wave
   count = 0;
   for (int i = first; i < tasks.size(); i++) {
@@ -672,7 +672,7 @@ void BatchedThreadedNnet3CudaPipeline::ComputeBatchFeatures(
       KALDI_WARN << "Warning empty audio file";
     }
   }
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 // Allocates decodables for tasks in the range of tasks[first,tasks.size())
@@ -819,13 +819,13 @@ void BatchedThreadedNnet3CudaPipeline::CompleteTask(CudaDecoder *cuda_decoder,
 }
 
 void BatchedThreadedNnet3CudaPipeline::DeterminizeOneLattice(TaskState *task) {
-  nvtxRangePushA("DeterminizeOneLattice");
+  // nvtxRangePushA("DeterminizeOneLattice");
   // Note this destroys the original raw lattice
   DeterminizeLatticePhonePrunedWrapper(*trans_model_, &task->lat,
                                        config_.decoder_opts.lattice_beam,
                                        &(task->dlat), config_.det_opts);
   task->determinized = true;
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void BatchedThreadedNnet3CudaPipeline::ExecuteWorker(int threadId) {

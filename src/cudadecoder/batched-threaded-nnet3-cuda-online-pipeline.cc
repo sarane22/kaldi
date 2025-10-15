@@ -26,7 +26,7 @@
 
 #include "hipify.h"
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include <mutex>
@@ -383,7 +383,7 @@ void BatchedThreadedNnet3CudaOnlinePipeline::DecodeBatch(
     const std::vector<bool> &is_last_chunk, std::vector<int> *channels,
     std::vector<const std::string *> *in_partial_hypotheses,
     std::vector<bool> *in_end_points) {
-  nvtxRangePushA("DecodeBatch");
+  // nvtxRangePushA("DecodeBatch");
   if (!channels) {
     channels = &channels_;
     ListIChannelsInBatch(corr_ids, channels);
@@ -409,7 +409,7 @@ void BatchedThreadedNnet3CudaOnlinePipeline::DecodeBatch(
   RunDecoder(*channels, is_first_chunk);
 
   RunCallbacksAndFinalize(corr_ids, *channels, is_last_chunk);
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void BatchedThreadedNnet3CudaOnlinePipeline::ComputeOneFeature(int element) {

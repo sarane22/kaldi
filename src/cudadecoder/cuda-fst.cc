@@ -29,7 +29,7 @@
 #include "hipify.h"
 #else
 #include <cuda_runtime_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 namespace kaldi {
@@ -37,7 +37,7 @@ namespace cuda_decoder {
 
 CudaFst::CudaFst(const fst::StdFst &fst,
                  const TransitionInformation *trans_model /* = nullptr */) {
-  nvtxRangePushA("CudaFst constructor");
+  // nvtxRangePushA("CudaFst constructor");
 
   start_ = fst.Start();
   KALDI_ASSERT(start_ != fst::kNoStateId);
@@ -65,7 +65,7 @@ CudaFst::CudaFst(const fst::StdFst &fst,
   KALDI_DECODER_CUDA_CHECK_ERROR();
   h_arc_pdf_ilabels_.clear();  // we don't need those on host
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void CudaFst::ComputeOffsets(const fst::StdFst &fst) {

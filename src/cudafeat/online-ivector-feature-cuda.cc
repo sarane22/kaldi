@@ -26,7 +26,7 @@
 #endif
 #define CUBLAS_FILL_MODE_LOWER HIPSOLVER_FILL_MODE_LOWER
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 #endif
 
@@ -47,7 +47,7 @@ namespace kaldi {
 
 void IvectorExtractorFastCuda::GetIvector(const CuMatrixBase<BaseFloat> &feats,
                                           CuVector<BaseFloat> *ivector) {
-  nvtxRangePushA("GetIvector");
+  // nvtxRangePushA("GetIvector");
   CuMatrix<BaseFloat> posteriors, X;
   CuVector<BaseFloat> gamma;
   int rows = feats.NumRows();
@@ -129,7 +129,7 @@ void IvectorExtractorFastCuda::GetIvector(const CuMatrixBase<BaseFloat> &feats,
 
   ComputeIvectorFromStats(gamma, X, ivector);
 
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 
 void IvectorExtractorFastCuda::Read(

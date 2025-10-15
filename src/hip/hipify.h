@@ -255,9 +255,9 @@ inline __device__ void __syncwarp(unsigned mask = 0xffffffff) {
 #define cusparseSpMM_bufferSize hipsparseSpMM_bufferSize
 #define cusparseSpMatDescr_t hipsparseSpMatDescr_t
 #define cusparseStatus_t hipsparseStatus_t
-#define nvtxRangePop roctxRangePop
-#define nvtxRangePush roctxRangePush
-#define nvtxRangePushA roctxRangePushA
+//#define // nvtxRangePop roctxRangePop
+//#define // nvtxRangePush roctxRangePush
+//#define // nvtxRangePushA roctxRangePushA
 //
 // HIPCUB namespace.
 //

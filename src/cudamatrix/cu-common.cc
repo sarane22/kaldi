@@ -52,15 +52,15 @@ NvtxTracer::NvtxTracer(const char* name) {
 	eventAttrib.color = colors[color_id];
 	eventAttrib.messageType = NVTX_MESSAGE_TYPE_ASCII;
 	eventAttrib.message.ascii = name;
-	nvtxRangePushEx(&eventAttrib);
-  // nvtxRangePushA(name);
+	// nvtxRangePushEx(&eventAttrib);
+  // // nvtxRangePushA(name);
 #endif
 }
 NvtxTracer::~NvtxTracer() {
 #ifdef __IS_HIP_COMPILE__
   roctxRangePop();
 #else
-        nvtxRangePop();
+        // nvtxRangePop();
 #endif
 }
 #endif

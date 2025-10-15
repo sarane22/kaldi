@@ -22,7 +22,7 @@
 
 #include "hipify.h"
 #else
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include "matrix/matrix-functions.h"
@@ -31,7 +31,7 @@ namespace kaldi {
 
 CudaFeatureWindowFunction::CudaFeatureWindowFunction(
     const FrameExtractionOptions &opts) {
-  nvtxRangePushA("CudaFeatureWindowFunction::CudaFeatureWindowFunction");
+  // nvtxRangePushA("CudaFeatureWindowFunction::CudaFeatureWindowFunction");
   int32 frame_length = opts.WindowSize();
 
   // Create CPU feature window.
@@ -40,6 +40,6 @@ CudaFeatureWindowFunction::CudaFeatureWindowFunction(
   // Copy into GPU memory.
   cu_window.Resize(frame_length, kUndefined);
   cu_window.CopyFromVec(feature_window.window);
-  nvtxRangePop();
+  // nvtxRangePop();
 }
 }  // namespace kaldi

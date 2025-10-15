@@ -27,7 +27,7 @@
 #else
 #include <cuda.h>
 #include <cuda_profiler_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include <sstream>
@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
     int32 num_task_submitted = 0, num_err = 0;
     double total_audio = 0;
 
-    nvtxRangePush("Global Timer");
+    // nvtxRangePush("Global Timer");
     // starting timer here so we
     // can measure throughput
     // without allocation
@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 
     // number of seconds elapsed since the creation of timer
     double total_time = timer.Elapsed();
-    nvtxRangePop();
+    // nvtxRangePop();
 
     KALDI_LOG << "Decoded " << num_task_submitted << " utterances, " << num_err
               << " with errors.";

@@ -30,7 +30,7 @@
 #else
 #include <cuda.h>
 #include <cuda_profiler_api.h>
-#include <nvtx3/nvToolsExt.h>
+// #include <nvtx3/nvToolsExt.h>
 #endif
 
 #include <algorithm>
@@ -151,7 +151,7 @@ int main(int argc, char *argv[]) {
     std::uniform_real_distribution<> dis(0.0, 1.0);
 
     std::priority_queue<Stream> streams;
-    nvtxRangePush("Global Timer");
+    // nvtxRangePush("Global Timer");
     Timer timer;
 
     // Initial set of streams will start randomly within the first second of
@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
 
     dynamic_batcher.WaitForCompletion();
     KALDI_LOG << "Done.";
-    nvtxRangePop();
+    // nvtxRangePop();
 
     KALDI_LOG << "Latency stats:";
     PrintLatencyStats(latencies);
