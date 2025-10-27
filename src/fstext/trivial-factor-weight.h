@@ -63,6 +63,10 @@ using std::unordered_map;
 #include <fst/cache.h>
 #include <fst/test-properties.h>
 
+#ifndef OPENFST_VER
+#define OPENFST_VER 10803
+#endif
+
 namespace fst {
 
 

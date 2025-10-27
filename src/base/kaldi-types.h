@@ -39,6 +39,10 @@ typedef float   BaseFloat;
 // we find in the future lacks stdint.h
 #include <stdint.h>
 
+#ifndef OPENFST_VER
+#define OPENFST_VER 10803
+#endif
+
 #if OPENFST_VER >= 10800
 typedef int8_t   int8;
 typedef int16_t  int16;

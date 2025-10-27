@@ -21,6 +21,10 @@
 #define KALDI_FSTEXT_PRE_DETERMINIZE_INL_H_
 
 
+#ifndef OPENFST_VER
+#define OPENFST_VER 10803
+#endif
+
 /* Do not include this file directly.  It is an implementation file included by PreDeterminize.h */
 
 /*

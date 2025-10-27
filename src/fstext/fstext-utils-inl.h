@@ -33,6 +33,10 @@
 #include <algorithm>
 #include <string>
 
+#ifndef OPENFST_VER
+#define OPENFST_VER 10803
+#endif
+
 namespace fst {
 
 

@@ -2,6 +2,10 @@
 #define KALDI_FSTEXT_OPENFST_COMPAT_H
 
 
+#ifndef OPENFST_VER
+#define OPENFST_VER 10803
+#endif
+
 #if OPENFST_VER < 10800
 #define FST_FLAGS_fst_weight_separator FLAGS_fst_weight_separator
 #define FST_FLAGS_fst_field_separator FLAGS_fst_field_separator
