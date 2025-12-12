@@ -1,3 +1,4 @@
+#include <cuda/functional>
 // cudadecoder/cuda-decoder-kernels.cu
 //
 // Copyright (c) 2019, NVIDIA CORPORATION.  All rights reserved.
@@ -554,7 +555,7 @@ __global__ void reset_for_frame_and_estimate_cutoff_kernel(
       cst_dev_params.d_histograms.lane(ilane)[bin_id] = 0; // reset for this frame
     }
 
-    CostType min = BlockReduce(temp_storage).Reduce(total_cost, cub::Min());
+    CostType min = BlockReduce(temp_storage).Reduce(total_cost, cuda::minimum<CostType>{});
     if (narcs > 0 && threadIdx.x == 0) {
       // narcs > 0 to have at least one valid element in the reduce
       CostType new_cutoff = min + orderedIntToFloat(lane_counters->int_beam);
