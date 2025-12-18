@@ -376,7 +376,7 @@ bool CuDevice::IsComputeExclusive() {
     KALDI_CUDA_ERR(e,  "Failed to get device properties");
   }
   // find out whether compute exclusive mode is used
-  switch (gpu_prop.computeMode) {
+  switch (0 /* computeMode removed in CUDA 13 */) {
     case cudaComputeModeExclusive :
       return true;
       break;

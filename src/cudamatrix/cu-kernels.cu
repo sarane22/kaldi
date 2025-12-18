@@ -1,3 +1,4 @@
+#include <cuda/functional>
 // cudamatrix/cu-kernels.cu
 
 // Copyright 2009-2012  Karel Vesely
@@ -2861,7 +2862,7 @@ static void _softmax_reduce(Real*y, const Real*x, MatrixDim d, int src_stride) {
   for (int j = tid; j < d.cols; j += CU1DBLOCK) {
     tmax = fmax(tmax, x[x_start + j]);
   }
-  tmax = BlockReduceT(temp_storage).Reduce(tmax, cub::Max());
+  tmax = BlockReduceT(temp_storage).Reduce(tmax, cuda::maximum<Real>{});
 
   // broadcast max to all threads
   if (tid == 0) {
@@ -3054,7 +3055,7 @@ static void _log_softmax_reduce(Real* y, const Real* x, MatrixDim y_dim,
   for (int j = tid; j < y_dim.cols; j += CU1DBLOCK) {
     tmax = fmax(tmax, x[x_start + j]);
   }
-  tmax = BlockReduceT(temp_storage).Reduce(tmax, cub::Max());
+  tmax = BlockReduceT(temp_storage).Reduce(tmax, cuda::maximum<Real>{});
 
   // broadcast max to all threads
   if (tid == 0) {
